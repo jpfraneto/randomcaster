@@ -38,6 +38,35 @@ export default function Home() {
       <Head>
         <title>randomcaster</title>
         <link rel="icon" href="/favicon.ico" />
+
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>randomcaster</title>
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content="https://randomcaster.lat/" />
+        <meta property="og:title" content="randomcaster - embrace the chaos" />
+        <meta
+          property="og:description"
+          content="dive into the unpredictable world of randomcaster... where every click is a window into a new person"
+        />
+        <meta property="og:image" content="/images/coyotee.png" />
+
+        <meta property="twitter:card" content="summary_large_image" />
+        <meta property="twitter:url" content="https://randomcaster.lat/" />
+        <meta
+          property="twitter:title"
+          content="Randomcaster - Embrace the Chaos"
+        />
+        <meta
+          property="twitter:description"
+          content="Dive into the unpredictable world of Randomcaster where every click is a new adventure!"
+        />
+        <meta
+          property="twitter:image"
+          content="https://randomcaster.lat/preview-image.png"
+        />
+        <link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
+        <link rel="apple-touch-icon" href="%PUBLIC_URL%/logo192.png" />
       </Head>
 
       <main className="flex flex-col items-center justify-start w-full h-full px-1 text-center relative">
