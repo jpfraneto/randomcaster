@@ -24,4 +24,12 @@ body {
       rgb(var(--background-end-rgb))
     )
     rgb(var(--background-start-rgb));
+
+}
+
+.jester {
+  background-image: url('/images/jester.png');
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
 }

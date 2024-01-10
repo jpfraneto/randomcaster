@@ -32,31 +32,22 @@ export default function Home() {
   };
 
   return (
-    <div className="md:w-96 mx-auto h-screen border-white border-l-2 border-r-2 overflow-y-scroll flex flex-col items-center justify-center  pt-2 pb-12 bg-black text-white">
+    <div className="md:w-96 mx-auto mb-24 h-screen border-white border-l-2 border-r-2 overflow-y-scroll flex flex-col items-center justify-center  pt-2 pb-12 bg-black text-white">
       <Head>
         <title>randomcaster</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <main
-        style={{
-          backgroundImage: "/images/jester.png",
-          backgroundColor: "black",
-          backgroundPosition: "center center",
-          backgroundSize: "cover",
-          backgroundRepeat: "no-repeat",
-        }}
-        className="flex flex-col items-center justify-end pb-12 w-full h-screen flex-1 px-1 text-center relative"
-      >
-        <div className="h-full">
+      <main className="flex jester flex-col items-center justify-start  w-full h-screen flex-1 px-1 text-center relative">
+        <div className="h-4/5 w-full">
           {randomCastData.map((cast, index) => (
             <div
               key={index}
               className={`${
                 index == randomCastData.length && "mb-12"
-              } my-4 max-w-2xl  overflow-y-scroll  w-full bg-white text-black shadow-md rounded-lg overflow-hidden`}
+              } my-4 max-w-2xl  overflow-y-scroll  w-full bg-white text-black shadow-md rounded-lg `}
             >
-              <div className="p-4 w-full flex items-start space-x-4">
+              <div className="p-4 w-full flex items-start space-x-4 h-full">
                 <div className="w-2/5 aspect-square rounded-full overflow-hidden relative">
                   <Image
                     src={userInformation[index].pfp.url}
@@ -82,15 +73,25 @@ export default function Home() {
         </div>
 
         <div className="w-full fixed bottom-2 z-10 ">
-          <button
-            onClick={fetchRandomCast}
-            disabled={loading}
-            className={`px-6 py-3 ${
-              loading ? "bg-gray-300" : "bg-blue-500 hover:bg-blue-700"
-            } text-white text-xl rounded-full transition duration-300  border-red-300 border-2 ease-in-out`}
-          >
-            {loading ? "exploring farcaster..." : "get random cast"}
-          </button>
+          <div className="flex justify-center">
+            <button
+              onClick={fetchRandomCast}
+              disabled={loading}
+              className={`px-6 py-3 ${
+                loading ? "bg-gray-300" : "bg-blue-500 hover:bg-blue-700"
+              } text-white text-xl rounded-full transition duration-300  border-red-300 border-2 ease-in-out`}
+            >
+              {loading ? "exploring farcaster..." : "get random cast"}
+            </button>
+            <button
+              className="ml-4 bg-red-600 h-4 w-4 rounded-full"
+              onClick={() => {
+                setRandomCastData([]);
+                setUserInformation([]);
+              }}
+            ></button>
+          </div>
+
           {error && <p className="text-red-500 mt-2">{error}</p>}
         </div>
       </main>
