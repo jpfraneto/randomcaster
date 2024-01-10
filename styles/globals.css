@@ -28,10 +28,11 @@ body {
 }
 
 .jester {
-  background-image: url('/images/jester.png');
+  background-image: url('/images/coyote.png');
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center;
+  
 }
 
 .cast-display {

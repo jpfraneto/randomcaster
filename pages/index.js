@@ -3,6 +3,7 @@ import Head from "next/head";
 import Image from "next/image";
 import CastDisplay from "@/components/CastDisplay";
 import Spinner from "@/components/Spinner";
+import Link from "next/link";
 
 export default function Home() {
   const [randomCastData, setRandomCastData] = useState([]);
@@ -40,10 +41,7 @@ export default function Home() {
       </Head>
 
       <main className="flex flex-col items-center justify-start w-full h-full px-1 text-center relative">
-        <div
-          ref={scrollDivRef}
-          className="grow pb-3 bg-purple-500 w-full overflow-y-scroll"
-        >
+        <div ref={scrollDivRef} className="grow pb-3  w-full overflow-y-scroll">
           {randomCastData.map((cast, index) => (
             <CastDisplay
               key={index}
@@ -53,7 +51,7 @@ export default function Home() {
           ))}
         </div>
 
-        <div className="w-full h-24 py-2 bg-black  flex items-center justify-center ">
+        <div className="w-full h-24 py-2 opacity-60 shadow-lg shadow-black bg-black flex items-center justify-center ">
           <button
             onClick={fetchRandomCast}
             disabled={loading}
@@ -73,6 +71,12 @@ export default function Home() {
           >
             start again
           </button>
+          <Link
+            className="mx-4 text-yellow-600 h-8 w-8 border-2 border-yellow-600 rounded-full p-auto bg-red-600"
+            href="/wtf"
+          >
+            ?
+          </Link>
         </div>
       </main>
     </div>
