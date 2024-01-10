@@ -1,118 +1,99 @@
-import Image from 'next/image'
-import { Inter } from 'next/font/google'
-
-const inter = Inter({ subsets: ['latin'] })
+import { useState } from "react";
+import Head from "next/head";
+import Image from "next/image";
 
 export default function Home() {
+  const [randomCastData, setRandomCastData] = useState([]);
+  const [userInformation, setUserInformation] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+
+  const fetchRandomCast = async () => {
+    setLoading(true);
+    setError("");
+    try {
+      const response = await fetch("/api/get-random-cast");
+      if (!response.ok) throw new Error("Network response was not ok.");
+      const data = await response.json();
+      console.log("the data is: ", data);
+      setRandomCastData([...randomCastData, data.randomCast]);
+      setUserInformation([...userInformation, data.userInformation]);
+      setLoading(false);
+    } catch (error) {
+      setError("Failed to fetch random cast: " + error.message);
+      setLoading(false);
+    }
+  };
+
+  // Format the timestamp
+  const formatTimestamp = (timestamp) => {
+    const date = new Date(timestamp);
+    return date.toLocaleString();
+  };
+
   return (
-    <main
-      className={`flex min-h-screen flex-col items-center justify-between p-24 ${inter.className}`}
-    >
-      <div className="z-10 max-w-5xl w-full items-center justify-between font-mono text-sm lg:flex">
-        <p className="fixed left-0 top-0 flex w-full justify-center border-b border-gray-300 bg-gradient-to-b from-zinc-200 pb-6 pt-8 backdrop-blur-2xl dark:border-neutral-800 dark:bg-zinc-800/30 dark:from-inherit lg:static lg:w-auto lg:rounded-xl lg:border lg:bg-gray-200 lg:p-4 lg:dark:bg-zinc-800/30">
-          Get started by editing&nbsp;
-          <code className="font-mono font-bold">pages/index.js</code>
-        </p>
-        <div className="fixed bottom-0 left-0 flex h-48 w-full items-end justify-center bg-gradient-to-t from-white via-white dark:from-black dark:via-black lg:static lg:h-auto lg:w-auto lg:bg-none">
-          <a
-            className="pointer-events-none flex place-items-center gap-2 p-8 lg:pointer-events-auto lg:p-0"
-            href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            By{' '}
-            <Image
-              src="/vercel.svg"
-              alt="Vercel Logo"
-              className="dark:invert"
-              width={100}
-              height={24}
-              priority
-            />
-          </a>
+    <div className="md:w-96 mx-auto h-screen border-white border-l-2 border-r-2 overflow-y-scroll flex flex-col items-center justify-center  pt-2 pb-12 bg-black text-white">
+      <Head>
+        <title>randomcaster</title>
+        <link rel="icon" href="/favicon.ico" />
+      </Head>
+
+      <main
+        style={{
+          backgroundImage: "/images/jester.png",
+          backgroundColor: "black",
+          backgroundPosition: "center center",
+          backgroundSize: "cover",
+          backgroundRepeat: "no-repeat",
+        }}
+        className="flex flex-col items-center justify-end pb-12 w-full h-screen flex-1 px-1 text-center relative"
+      >
+        <div className="h-full">
+          {randomCastData.map((cast, index) => (
+            <div
+              key={index}
+              className={`${
+                index == randomCastData.length && "mb-12"
+              } my-4 max-w-2xl  overflow-y-scroll  w-full bg-white text-black shadow-md rounded-lg overflow-hidden`}
+            >
+              <div className="p-4 w-full flex items-start space-x-4">
+                <div className="w-2/5 aspect-square rounded-full overflow-hidden relative">
+                  <Image
+                    src={userInformation[index].pfp.url}
+                    alt="Profile"
+                    layout="fill"
+                  />
+                </div>
+                <div className="w-3/5 flex flex-col items-start">
+                  <div className="text-lg  font-medium text-purple-600">
+                    {userInformation[index].displayName}
+                  </div>
+                  <div className="text-sm text-gray-500">
+                    @{userInformation[index].username}
+                  </div>
+                  <div className="text-sm text-gray-500">
+                    {formatTimestamp(cast.timestamp)}
+                  </div>
+                  <p className="text-gray-700 text-left">{cast.text}</p>
+                </div>
+              </div>
+            </div>
+          ))}
         </div>
-      </div>
 
-      <div className="relative flex place-items-center before:absolute before:h-[300px] before:w-[480px] before:-translate-x-1/2 before:rounded-full before:bg-gradient-radial before:from-white before:to-transparent before:blur-2xl before:content-[''] after:absolute after:-z-20 after:h-[180px] after:w-[240px] after:translate-x-1/3 after:bg-gradient-conic after:from-sky-200 after:via-blue-200 after:blur-2xl after:content-[''] before:dark:bg-gradient-to-br before:dark:from-transparent before:dark:to-blue-700/10 after:dark:from-sky-900 after:dark:via-[#0141ff]/40 before:lg:h-[360px]">
-        <Image
-          className="relative dark:drop-shadow-[0_0_0.3rem_#ffffff70] dark:invert"
-          src="/next.svg"
-          alt="Next.js Logo"
-          width={180}
-          height={37}
-          priority
-        />
-      </div>
-
-      <div className="mb-32 grid text-center lg:max-w-5xl lg:w-full lg:mb-0 lg:grid-cols-4 lg:text-left">
-        <a
-          href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=default-template-tw&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Docs{' '}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Find in-depth information about Next.js features and API.
-          </p>
-        </a>
-
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=default-template-tw&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Learn{' '}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Learn about Next.js in an interactive course with&nbsp;quizzes!
-          </p>
-        </a>
-
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=default-template-tw&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Templates{' '}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Discover and deploy boilerplate example Next.js&nbsp;projects.
-          </p>
-        </a>
-
-        <a
-          href="https://vercel.com/new?utm_source=create-next-app&utm_medium=default-template-tw&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Deploy{' '}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Instantly deploy your Next.js site to a shareable URL with Vercel.
-          </p>
-        </a>
-      </div>
-    </main>
-  )
+        <div className="w-full fixed bottom-2 z-10 ">
+          <button
+            onClick={fetchRandomCast}
+            disabled={loading}
+            className={`px-6 py-3 ${
+              loading ? "bg-gray-300" : "bg-blue-500 hover:bg-blue-700"
+            } text-white text-xl rounded-full transition duration-300  border-red-300 border-2 ease-in-out`}
+          >
+            {loading ? "exploring farcaster..." : "get random cast"}
+          </button>
+          {error && <p className="text-red-500 mt-2">{error}</p>}
+        </div>
+      </main>
+    </div>
+  );
 }
