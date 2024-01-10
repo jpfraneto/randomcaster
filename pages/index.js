@@ -16,8 +16,8 @@ export default function Home() {
       if (!response.ok) throw new Error("Network response was not ok.");
       const data = await response.json();
       console.log("the data is: ", data);
-      setRandomCastData([...randomCastData, data.randomCast]);
-      setUserInformation([...userInformation, data.userInformation]);
+      setRandomCastData([data.randomCast, ...randomCastData]);
+      setUserInformation([data.userInformation, ...userInformation]);
       setLoading(false);
     } catch (error) {
       setError("Failed to fetch random cast: " + error.message);
